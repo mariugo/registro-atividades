@@ -18,15 +18,15 @@ public class CategoriasController {
 
     private final CategoriasRepository categoriasRepository;
 
-    @GetMapping("/categorias") //SELECT * FROM CATEGORIAS
     @Async
+    @GetMapping("/categorias") //SELECT * FROM CATEGORIAS
     public Iterable<Categorias> categorias() {
         return categoriasRepository.findAll();
     }
 
     //Melhor utilizar a ResponseEntity para ter o status 404 e não retornar null
-    @GetMapping("/categoria/{idCategoria}") // SELECT NOME FROM CATEGORIAS WHERE IDCATEGORIA=?
     @Async
+    @GetMapping("/categoria/{idCategoria}") // SELECT NOME FROM CATEGORIAS WHERE IDCATEGORIA=?
     public ResponseEntity<Categorias> categoria(@PathVariable(required = true, name = "idCategoria") Long idCategoria) {
         Optional<Categorias> categoria = categoriasRepository.findById(idCategoria);
 
@@ -35,15 +35,15 @@ public class CategoriasController {
                 orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/nova_categoria") //INSERT INTO CATEGORIA
     @Async
+    @PostMapping("/nova_categoria") //INSERT INTO CATEGORIA
     public Categorias novaCategoria(@RequestBody Categorias categoria){
         categoriasRepository.save(categoria);
         return categoria;
     }
 
-    @DeleteMapping("/remover_categoria/{idCategoria}")
     @Async
+    @DeleteMapping("/remover_categoria/{idCategoria}")
     public ResponseEntity<Categorias> removerCategoria(@PathVariable(required = true, name = "idCategoria") Long idCategoria){
         if (categoriasRepository.findById(idCategoria).isPresent()) {
             categoriasRepository.deleteById(idCategoria);
@@ -52,15 +52,15 @@ public class CategoriasController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/atualizar_categoria/{idCategoria}")
     @Async
+    @PutMapping("/atualizar_categoria/{idCategoria}")
     public ResponseEntity<Categorias> atualizarCategoria(@PathVariable(required = true, name = "idCategoria") Long idCategoria, @RequestBody Categorias categoria){
         Categorias c = categoriasRepository.save(categoria);
         return ResponseEntity.ok().body(c);
     }
 
-    @GetMapping("/contar_categorias")
     @Async
+    @GetMapping("/contar_categorias")
     public Long contarCategorias(){
         return categoriasRepository.contarCategorias();
     }
