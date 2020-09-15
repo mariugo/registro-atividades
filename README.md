@@ -1,7 +1,7 @@
 # Registro de Atividades
 WebApp para o registro de atividades de um usuário.
 
-#####Tecnologias utilizadas
+### Tecnologias utilizadas
 _Spring Boot 2.3.3_
 
 _Java SDK 11_
