@@ -4,8 +4,10 @@ class NavBar extends React.Component {
   state = {};
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a className="navbar-brand">REGISTRO DE ATIVIDADES</a>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a className="navbar-brand" href="/">
+          REGISTRO DE ATIVIDADES
+        </a>
         <button
           className="navbar-toggler"
           type="button"
@@ -20,12 +22,12 @@ class NavBar extends React.Component {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <a className="nav-link">
+              <a className="nav-link" href="/">
                 Atividades<span className="sr-only">(current)</span>
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link">Categorias</a>
+              <a className="nav-link" href="/categorias">Categorias</a>
             </li>
           </ul>
         </div>
