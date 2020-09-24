@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RequestMapping("/api")
 @AllArgsConstructor
 public class AtividadesController {
@@ -32,9 +32,9 @@ public class AtividadesController {
     }
 
     @PostMapping("/nova_atividade") //INSERT INTO atividade
-    public Atividades novaAtividade(@RequestBody Atividades atividade){
+    public @ResponseBody String novaAtividade(@RequestBody Atividades atividade){
         atividadesRepository.save(atividade);
-        return atividade;
+        return "Atividade inserida com sucesso";
     }
 
     @DeleteMapping("/remover_atividade/{idAtividade}")

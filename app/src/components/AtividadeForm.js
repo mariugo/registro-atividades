@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React from "react";
 import axios from "axios";
 
 const CATEGORIAS_REST_API_URL = "http://localhost:8080/api/categorias";
@@ -9,52 +9,116 @@ const api = axios.create({
 });
 
 class AtividadeForm extends React.Component {
+
+   
     state = {
         categorias: [],
-        atividades: []
-    };
+        atividades: [],
+        descricao: '',
+        local: '',
+        dataAtividade: '',
+        idCategoria: ''
+            
+        }
+
 
     constructor() {
         super();
-        //SELECT ALL
-        api.get(CATEGORIAS_REST_API_URL).then((res) => {
-            this.setState({ categorias: res.data });
-        });
-        
-        criarAtividade = async () {
-            let res = await api.post(ATIVIDADES_REST_API_URL, {})
+        this.selecionarCategorias();
+
+        //Handlers
+        this.descricaoHandler = this.descricaoHandler.bind(this);
+        this.localHandler = this.localHandler.bind(this);
+        this.dataHandler = this.dataHandler.bind(this);
+        this.categoriaHandler = this.categoriaHandler.bind(this);
+        this.idCategoriaHandler = this.idCategoriaHandler.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
+
+
+        this.inserirAtividade = this.inserirAtividade.bind(this);
+
+    }
+
+    //Handlers
+    descricaoHandler = (event) => {
+        this.setState({descricao: event.target.value});
+    }
+    localHandler = (event) => {
+        this.setState({local: event.target.value});
+    }
+    dataHandler = (event) => {
+        this.setState({dataAtividade: event.target.value});
+    }
+    categoriaHandler = (event) => {
+        this.setState({categoria: event.target.value});
+    }
+    idCategoriaHandler = (event) => {
+        this.setState({idCategoria: event.target.value});
+    }
+
+    // handleChange(event){
+    //     const target = event.target;
+    //     const value = target.value;
+    //     const name = target.name;
+    //     let atividade = {...this.state.atividade};
+    //     atividade[name] = value;
+    //     this.setState({atividade});
+    //     console.log(atividade);
+    // }
+
+    selecionarCategorias = async () => {
+        let data = await api.get(CATEGORIAS_REST_API_URL).then(({ data }) => data);
+        this.setState({ categorias: data });
+    }
+
+    inserirAtividade(e) {
+        e.preventDefault();
+        try {
+            let nova_atividade = {
+                descricao: this.state.descricao,
+                 local: this.state.local,
+                 dataAtividade: this.state.dataAtividade,
+                 idCategoria: this.state.idCategoria
+             };
+
+            // axios.post(ATIVIDADES_REST_API_URL, atividade).then(res => {
+            //     alert(res.data);
+            // });
+            console.log('nova_atividade =>' + JSON.stringify(nova_atividade))
+        } catch (error) {
+            console.log("Erro de inserção: " + error)
         }
     }
 
     render() {
         return (
-          
+
             <div className="container">
                 <h1 className="display-4 text-center">Formulário de Atividades</h1>
                 <hr />
                 <form>
-                    <div class="form-group row">
-                        <label for="descricao" class="col-sm-1 col-form-label font-weight-bold">Descrição:</label>
-                        <div class="col-sm-5">
-                            <input type="email" class="form-control" id="descricao" placeholder="Descreve a atividade" />
+                    <div className="form-group row">
+                        <label htmlFor="descricao" className="col-sm-1 col-form-label font-weight-bold">Descrição:</label>
+                        <div className="col-sm-5">
+                            <input type="text" className="form-control" id="descricao" value={this.state.descricao} onChange={this.descricaoHandler} placeholder="Descreve a atividade" />
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="local" class="col-sm-1 col-form-label font-weight-bold">Local:</label>
-                        <div class="col-sm-5">
-                            <input type="local" class="form-control" id="descricao" placeholder="Local da atividade" />
+                    <div className="form-group row">
+                        <label htmlFor="local" className="col-sm-1 col-form-label font-weight-bold">Local:</label>
+                        <div className="col-sm-5">
+                            <input type="text" className="form-control" id="local" value={this.state.local} onChange={this.localHandler} placeholder="Local da atividade" />
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="dataAtividade" class="col-sm-1 col-form-label font-weight-bold">Data:</label>
-                        <div class="col-sm-3">
-                            <input type="date" class="form-control" id="dataAtividade" />
+                    <div className="form-group row">
+                        <label htmlFor="dataAtividade" className="col-sm-1 col-form-label font-weight-bold">Data:</label>
+                        <div className="col-sm-3">
+                            <input type="date" className="form-control" id="dataAtividade" value={this.state.dataAtividade} onChange={this.dataHandler} />
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="categoria" class="col-sm-1 col-form-label font-weight-bold">Categoria:</label>
-                        <div class="col-sm-3">
-                            <select className="custom-select" id="categoria">
+                    <div className="form-group row">
+                        <label htmlFor="categorias" className="col-sm-1 col-form-label font-weight-bold">Categoria:</label>
+                        <div className="col-sm-3">
+                            <select className="custom-select" id="categorias" value={this.categorias}  onChange={this.categoriaHandler}>
                                 <option>Escolha</option>
                                 {this.state.categorias.map((categorias) => (
                                     <option key={categorias.idCategoria}>
@@ -63,16 +127,18 @@ class AtividadeForm extends React.Component {
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-success btn-m mr-5 pr-5 pl-5" onClick={this.criarAtividade}>Salvar</button>
-                            <button type="reset" class="btn btn-secondary btn-m ml-5 pr-5 pl-5">Cancelar</button>
+                    <div className="form-group row">
+                        <div className="col-sm-10">
+                            <button type="submit" className="btn btn-success btn-m mr-5 pr-5 pl-5" onClick={this.inserirAtividade}>Salvar</button>
+                            <button type="reset" className="btn btn-secondary btn-m ml-5 pr-5 pl-5">Cancelar</button>
                         </div>
                     </div>
                 </form>
             </div>
         );
     }
+
 }
+
 
 export default AtividadeForm;

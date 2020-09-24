@@ -7,12 +7,10 @@ class Hero extends React.Component {
       <div className="jumbotron container-sm" id="top">
         <h1 className="display-4 mt-3">Keep Track!</h1>
         <p className="lead">
-          Esta aplicação é para você registrar suas atividades, de acordo com as categorias, que você inclusive pode registrar no menu categorias.
+          Esta aplicação é para você registrar suas atividades, de acordo com as categorias, que você inclusive pode registrar no menu categorias. </p>
           <p className="lead">
-            Espero que assim, você tenha um melhor controle de como gasta o seu tempo!
-          </p>
-        </p>
-
+            Espero que assim, você tenha um melhor controle de como gasta o seu tempo! </p>
+         
         <div
           id="carouselFade"
           className="carousel slide carousel-fade"

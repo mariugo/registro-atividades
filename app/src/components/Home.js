@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import Atividade from './Atividade';
 import AtividadeForm from './AtividadeForm';
 import Hero from './Hero';
 
@@ -9,6 +10,7 @@ class Home extends React.Component {
             <Fragment>
                 <Hero/>
                 <AtividadeForm/>
+                <Atividade/>
             </Fragment> );
     }
 }

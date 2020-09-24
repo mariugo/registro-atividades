@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RequestMapping("/api")
 @AllArgsConstructor
 public class CategoriasController {
@@ -33,9 +33,9 @@ public class CategoriasController {
     }
 
     @PostMapping("/nova_categoria") //INSERT INTO CATEGORIA
-    public Categorias novaCategoria(@RequestBody Categorias categoria){
+    public @ResponseBody String novaCategoria(@RequestBody Categorias categoria){
         categoriasRepository.save(categoria);
-        return categoria;
+        return "Categoria inserida com sucesso";
     }
 
     @DeleteMapping("/remover_categoria/{idCategoria}")
