@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
 import NavBar from "./components/NavBar";
 import Categoria from "./components/Categoria";
 import Home from "./components/Home";
+import UpdateCategoria from "./components/UpdateCategoria";
 
 class App extends React.Component {
   state = {};

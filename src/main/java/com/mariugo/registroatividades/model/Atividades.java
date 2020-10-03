@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.sql.Date;
 import java.time.Instant;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -24,7 +25,7 @@ public class Atividades {
 
     private String local;
 
-    private Instant dataAtividade;
+    private Date dataAtividade;
 
     @ManyToOne
     private Categorias categorias;

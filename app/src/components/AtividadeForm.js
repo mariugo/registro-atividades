@@ -9,7 +9,6 @@ const api = axios.create({
 });
 
 class AtividadeForm extends React.Component {
-
    
     state = {
         categorias: [],
@@ -17,8 +16,8 @@ class AtividadeForm extends React.Component {
         descricao: '',
         local: '',
         dataAtividade: '',
-        idCategoria: ''
-            
+        nome: '',
+        idCategoria: ''   
         }
 
 
@@ -31,11 +30,9 @@ class AtividadeForm extends React.Component {
         this.localHandler = this.localHandler.bind(this);
         this.dataHandler = this.dataHandler.bind(this);
         this.categoriaHandler = this.categoriaHandler.bind(this);
-        this.idCategoriaHandler = this.idCategoriaHandler.bind(this);
-        //this.handleChange = this.handleChange.bind(this);
-
 
         this.inserirAtividade = this.inserirAtividade.bind(this);
+        
 
     }
 
@@ -50,26 +47,14 @@ class AtividadeForm extends React.Component {
         this.setState({dataAtividade: event.target.value});
     }
     categoriaHandler = (event) => {
-        this.setState({categoria: event.target.value});
-    }
-    idCategoriaHandler = (event) => {
         this.setState({idCategoria: event.target.value});
     }
-
-    // handleChange(event){
-    //     const target = event.target;
-    //     const value = target.value;
-    //     const name = target.name;
-    //     let atividade = {...this.state.atividade};
-    //     atividade[name] = value;
-    //     this.setState({atividade});
-    //     console.log(atividade);
-    // }
-
     selecionarCategorias = async () => {
         let data = await api.get(CATEGORIAS_REST_API_URL).then(({ data }) => data);
         this.setState({ categorias: data });
     }
+
+   
 
     inserirAtividade(e) {
         e.preventDefault();
@@ -78,13 +63,14 @@ class AtividadeForm extends React.Component {
                 descricao: this.state.descricao,
                  local: this.state.local,
                  dataAtividade: this.state.dataAtividade,
-                 idCategoria: this.state.idCategoria
+                 categorias: {
+                     idCategoria: this.state.idCategoria,
+                 } 
              };
 
-            // axios.post(ATIVIDADES_REST_API_URL, atividade).then(res => {
-            //     alert(res.data);
-            // });
-            console.log('nova_atividade =>' + JSON.stringify(nova_atividade))
+            axios.post(ATIVIDADES_REST_API_URL, nova_atividade).then(res => {
+                 alert(res.data);
+            });
         } catch (error) {
             console.log("Erro de inserção: " + error)
         }
@@ -92,7 +78,6 @@ class AtividadeForm extends React.Component {
 
     render() {
         return (
-
             <div className="container">
                 <h1 className="display-4 text-center">Formulário de Atividades</h1>
                 <hr />
@@ -118,10 +103,10 @@ class AtividadeForm extends React.Component {
                     <div className="form-group row">
                         <label htmlFor="categorias" className="col-sm-1 col-form-label font-weight-bold">Categoria:</label>
                         <div className="col-sm-3">
-                            <select className="custom-select" id="categorias" value={this.categorias}  onChange={this.categoriaHandler}>
+                            <select className="custom-select" id="categorias" onChange={this.categoriaHandler}>
                                 <option>Escolha</option>
                                 {this.state.categorias.map((categorias) => (
-                                    <option key={categorias.idCategoria}>
+                                    <option key={categorias.idCategoria} value={categorias.idCategoria}>
                                         {categorias.nome}</option>
                                 ))}
                             </select>

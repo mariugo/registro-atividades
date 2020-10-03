@@ -33,17 +33,24 @@ public class AtividadesController {
 
     @PostMapping("/nova_atividade") //INSERT INTO atividade
     public @ResponseBody String novaAtividade(@RequestBody Atividades atividade){
-        atividadesRepository.save(atividade);
+        try {
+            atividadesRepository.save(atividade);
+        }catch (Exception e) {
+            return ("Erro ao inserir atividade " + e.getMessage());
+        }
         return "Atividade inserida com sucesso";
     }
 
     @DeleteMapping("/remover_atividade/{idAtividade}")
     public ResponseEntity<Atividades> removerAtividade(@PathVariable(required = true, name = "idAtividade") Long idAtividade){
-        if (atividadesRepository.findById(idAtividade).isPresent()) {
-            atividadesRepository.deleteById(idAtividade);
-            return ResponseEntity.ok().build();
+        try{
+            if (atividadesRepository.findById(idAtividade).isPresent()) {
+                atividadesRepository.deleteById(idAtividade);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/atualizar_atividade/{idAtividade}") // UPDATE BY ID

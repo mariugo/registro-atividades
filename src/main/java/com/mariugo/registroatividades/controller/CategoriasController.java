@@ -34,17 +34,24 @@ public class CategoriasController {
 
     @PostMapping("/nova_categoria") //INSERT INTO CATEGORIA
     public @ResponseBody String novaCategoria(@RequestBody Categorias categoria){
-        categoriasRepository.save(categoria);
+        try {
+            categoriasRepository.save(categoria);
+        }catch(Exception e){
+            return ("Erro ao inserir categoria" + e.getMessage());
+        }
         return "Categoria inserida com sucesso";
     }
 
     @DeleteMapping("/remover_categoria/{idCategoria}")
     public ResponseEntity<Categorias> removerCategoria(@PathVariable(required = true, name = "idCategoria") Long idCategoria){
-        if (categoriasRepository.findById(idCategoria).isPresent()) {
-            categoriasRepository.deleteById(idCategoria);
-            return ResponseEntity.ok().build();
+        try{
+            if (categoriasRepository.findById(idCategoria).isPresent()) {
+                categoriasRepository.deleteById(idCategoria);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/atualizar_categoria/{idCategoria}")
